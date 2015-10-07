@@ -1,0 +1,149 @@
+{% extends('layout.html.twig') %}
+{% block title %}管理员登陆{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/jquery.validator.css">
+    <link rel="stylesheet" href="../css/nc.css">
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        //        验证码服务KEY+TOKEN
+        var nc_appkey = 'TRJCN';
+        var nc_token = '94153dadbf407ac1f174618c0df174e67d85429b';
+
+        var path = '';//验证码资源路径
+        //client js call
+        var analyze_url="/front.php/analyze";//服务器校验证
+        var get_image = "/front.php/nocaptcha";//返回成语图片
+        var get_captcha = "/front.php/captcha";//返回验证码
+        var check_code = "/front.php/check_code";//检测验证码
+
+        var login_check = '/';
+    </script>
+    <script src="../js/jquery-2.1.1.min.js"></script>
+    <script src="../js/jquery.form.js"></script>
+    <script src="../js/jquery.validator.js"></script>
+    <script src="../js/layer/layer.js"></script>
+    <script src="../js/nc.js"></script>
+    <script>
+        //成语图形验证码-start
+        var nc = new noCaptcha();
+        var opt = {
+            renderTo: 'register_no_captcha',
+            appkey: nc_appkey,
+            token: nc_token,
+            elementID: ["J_Mobile"],
+            is_Opt: 0,
+            callback: function (data) {
+                console.log(data.csessionid);
+                $("input[name='nc_sig']").attr('value',data.sig);
+                $("input[name='nc_sessionid']").attr('value',data.csessionid);
+                $("input[name='nc_ua']").attr('value',data.value);
+            },
+            error: function (s) {
+            },
+            language: 'cn',
+            isEnabled: true,
+            foreign: 0
+        }
+        nc.init(opt);
+        //成语图形验证码-End
+
+
+        $('#login_form').validator({
+            theme: 'trjcn_right',
+            fields: {
+                'username': '用户名:required;length[~25];',
+                'passwd': '密码:required;',
+                //'letters_code': '校验码:required;length[4];',
+            },
+            // 表单验证通过后，ajax提交
+            valid: function(form){
+
+                var beforeSubmit = function(){
+                    return true;
+                }
+
+                var doSuccess=function(res){
+                    if(res.code==200){
+                        if (res.data.ok_url){location.href=res.data.ok_url;};
+                    }else{
+                        layer.open({
+                            content: res.msg
+                        });
+                    }
+                }
+
+                var doError = function(res){
+                    //dl.dialog({content:'网络错误!'});
+                }
+
+                var updateOptions   = {
+                    url:login_check,
+                    type: 'post',
+                    dataType:'json',
+                    beforeSubmit: beforeSubmit,
+                    success:doSuccess,
+                    error: doError
+                }
+                $(form).ajaxSubmit(updateOptions);
+            }
+        });
+
+    </script>
+{% endblock %}
+
+{% block body_class %}
+    class="signin"
+{% endblock %}
+
+{% block body %}
+    <div class="signinpanel">
+        <div class="row">
+            <div class="col-sm-7">
+                <div class="signin-info">
+                    <div class="logopanel m-b">
+                        <h1>[ H+ ]</h1>
+                    </div>
+                    <div class="m-b"></div>
+                    <h4>欢迎使用 <strong>H+ 后台主题UI框架</strong></h4>
+                    <ul class="m-b">
+                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势一</li>
+                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势二</li>
+                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势三</li>
+                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势四</li>
+                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势五</li>
+                    </ul>
+                    <strong>还没有账号？ <a href="login_v2.html#">立即注册&raquo;</a></strong>
+                </div>
+            </div>
+            <div class="col-sm-5">
+
+                <form method="post" id="login_form">
+                    <h4 class="no-margins">登录：</h4>
+
+                    <p class="m-t-md">登录到H+后台主题UI框架</p>
+                    <input type="text" class="form-control uname" name="username" placeholder="用户名"/>
+                    <input type="password" class="form-control pword" name="password" placeholder="密码"/>
+
+                    <div id="register_no_captcha" style="margin-top: 15px;" class="m-b"></div>
+
+                    <button class="btn btn-success btn-block">登录</button>
+
+                    <input type="hidden" name="nc_sig">
+                    <input type="hidden" name="nc_sessionid">
+                    <input type="hidden" name="nc_ua">
+                </form>
+
+            </div>
+        </div>
+        <div class="signup-footer">
+            <div class="pull-left">
+                &copy; 2015 All Rights Reserved. 杭州投融界网络有限公司
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

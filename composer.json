@@ -9,5 +9,19 @@
         }
     ],
     "minimum-stability": "beta",
-    "require": {}
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "require": {
+        "symfony/http-foundation": "^2.7",
+        "symfony/routing": "^2.7",
+        "symfony/http-kernel": "^2.7",
+        "symfony/event-dispatcher": "^2.7",
+        "twig/twig": "^1.22",
+        "symfony/yaml": "^2.7",
+        "predis/predis": "^1.0"
+    }
 }

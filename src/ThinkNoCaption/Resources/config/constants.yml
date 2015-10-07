@@ -1,0 +1,20 @@
+#操作码
+Opcode:
+  #返回常量
+  RETURN_CODE: 'code'
+  RETURN_MSG: 'msg'
+  RETURN_DATA: 'data'
+
+#AJAX返回状态码
+Status:
+  AJAX_200: 200
+  AJAX_201: 201
+  AJAX_202: 202
+  AJAX_203: 203
+  AJAX_204: 204
+  AJAX_205: 205
+
+#返回结果消息
+Constant:
+  SUCCESS: '操作成功'
+  FAILURE: '操作失败'
