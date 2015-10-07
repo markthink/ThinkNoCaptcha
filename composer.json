@@ -1,0 +1,13 @@
+{
+    "name": "markthink/think-no-captcha",
+    "description": "参照淘宝注册验证实现的No-CAPTCHA验证库，No-CAPTCHA是GOOGLE推出的一项验证码服务，国内有类似的实现比如极验。",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "markthink",
+            "email": "dxwsker@qq.com"
+        }
+    ],
+    "minimum-stability": "beta",
+    "require": {}
+}
